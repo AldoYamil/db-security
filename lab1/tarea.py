@@ -29,7 +29,7 @@ def select_01():
     """Mostrar todos los datos de todos los estudiantes."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("SELECT * FROM estudiantes;")  # <-- completa aquí
     for r in cursor.fetchall():
         print(dict(r))
     conn.close()
@@ -39,7 +39,7 @@ def select_02():
     """Mostrar nombre, apellido y email de estudiantes nacidos después del 2001."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("SELECT nombre, apellido, email FROM estudiantes WHERE fecha_nacimiento > '2001-12-31';")  # <-- completa aquí
     for r in cursor.fetchall():
         print(dict(r))
     conn.close()
@@ -49,7 +49,7 @@ def select_03():
     """Mostrar nombre y créditos de los cursos ordenados por créditos descendente."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("SELECT nombre, creditos FROM cursos ORDER BY creditos DESC;")  # <-- completa aquí
     for r in cursor.fetchall():
         print(dict(r))
     conn.close()
@@ -59,7 +59,7 @@ def select_04():
     """Mostrar nombre del estudiante, nombre del curso y nota (JOIN)."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("SELECT e.nombre, c.nombre AS curso, i.nota FROM estudiantes AS e JOIN inscripciones AS i ON i.estudiante_id = e.id JOIN cursos AS c ON i.curso_id = c.id;")  # <-- completa aquí
     for r in cursor.fetchall():
         print(dict(r))
     conn.close()
@@ -69,7 +69,7 @@ def select_05():
     """Mostrar cuántos estudiantes hay (columna: total)."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("SELECT COUNT(*) AS total FROM estudiantes;")  # <-- completa aquí
     print(dict(cursor.fetchone()))
     conn.close()
 
@@ -82,7 +82,7 @@ def insert_01():
     """Insertar estudiante: María Torres, maria.torres@email.com, 2004-08-12."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("INSERT INTO estudiantes (nombre, apellido, email, fecha_nacimiento) VALUES ('María', 'Torres', 'maria.torres@email.com', '2004-08-12');")  # <-- completa aquí
     conn.commit()
     print("[OK] Estudiante insertado.")
     conn.close()
@@ -92,7 +92,7 @@ def insert_02():
     """Insertar curso: Historia del Arte, créditos 3."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("INSERT INTO cursos (nombre, creditos) VALUES ('Historia del Arte', 3);")  # <-- completa aquí
     conn.commit()
     print("[OK] Curso insertado.")
     conn.close()
@@ -102,7 +102,7 @@ def insert_03():
     """Inscribir a Ana López (id=1) en Bases de Datos (id=3)."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("INSERT INTO inscripciones (estudiante_id, curso_id) VALUES ('1', '3');")  # <-- completa aquí
     conn.commit()
     print("[OK] Inscripcion insertada.")
     conn.close()
@@ -112,7 +112,7 @@ def insert_04():
     """Insertar dos estudiantes a la vez: Valentina Ruiz y Mateo Torres."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("INSERT INTO estudiantes (nombre, apellido, email, fecha_nacimiento) VALUES ('Valentina', 'Ruiz', 'valentina.ruiz@email.com', '2004-08-12'), ('Mateo', 'Torres', 'mateo.torres@email.com', '2004-08-12');")  # <-- completa aquí
     conn.commit()
     print("[OK] Estudiantes insertados.")
     conn.close()
@@ -126,7 +126,7 @@ def update_01():
     """Actualizar email de Carlos Mendoza (id=2) a carlos.m@email.com."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("UPDATE estudiantes SET email='carlos.m@email.com' WHERE id = 2;")  # <-- completa aquí
     conn.commit()
     print("[OK] Email actualizado.")
     conn.close()
@@ -136,7 +136,7 @@ def update_02():
     """Cambiar créditos de Inglés Técnico (id=4) a 3."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("UPDATE cursos SET creditos=3 WHERE id = 4;")  # <-- completa aquí
     conn.commit()
     print("[OK] Creditos actualizados.")
     conn.close()
@@ -146,7 +146,7 @@ def update_03():
     """Poner nota 14.5 a Sofía Ramírez (id=5) en Programación Python (curso_id=2)."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("UPDATE inscripciones  SET nota= 14.5 WHERE estudiante_id = 5 AND curso_id=2;")  # <-- completa aquí
     conn.commit()
     print("[OK] Nota actualizada.")
     conn.close()
@@ -160,7 +160,7 @@ def delete_01():
     """Eliminar la inscripción con id=5."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("DELETE  FROM inscripciones WHERE id = 5;")  # <-- completa aquí
     conn.commit()
     print("[OK] Inscripcion eliminada.")
     conn.close()
@@ -170,7 +170,7 @@ def delete_02():
     """Eliminar inscripciones con nota NULL."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("DELETE FROM inscripciones WHERE nota IS NULL;")  # <-- completa aquí
     conn.commit()
     print(f"[OK] {cursor.rowcount} inscripcion(es) eliminada(s).")
     conn.close()
@@ -180,7 +180,7 @@ def delete_03():
     """Eliminar cursos sin estudiantes inscritos (usar NOT IN)."""
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("")  # <-- completa aquí
+    cursor.execute("DELETE FROM cursos WHERE id NOT IN ( SELECT curso_id FROM inscripciones);")  # <-- completa aquí
     conn.commit()
     print(f"[OK] {cursor.rowcount} curso(s) eliminado(s).")
     conn.close()
